@@ -1,5 +1,8 @@
 pipeline {
-    agent 'aws-slave'
+    agent {
+        label 'aws-slave'  // Specifies the default agent for the entire pipeline
+    }
+
 
     stages {
         stage('Test')   {
