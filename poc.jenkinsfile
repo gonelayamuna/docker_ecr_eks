@@ -2,10 +2,15 @@ pipeline {
     agent any
 
     stages {
-        stage('Test')   {
+        stage('Build Docker')   {
             steps {
                 script {
-                    echo "First build"
+                    def imageName = "${JOB_NAME}-${BUILD_ID}"
+                    env.imageName = imageName
+                    sh """
+                    docker build -t ${imageName} .
+                    """
+                    //sh 'docker tag $JOB_NAME:v1.$BUILD_ID ${registry}:v1.$BUILD_ID'
                 }
             }
         }
