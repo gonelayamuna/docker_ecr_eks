@@ -1,0 +1,13 @@
+pipeline {
+    agent 'aws-slave'
+
+    stages {
+        stage('Test')   {
+            steps {
+                script {
+                    echo "First build"
+                }
+            }
+        }
+    }
+}
