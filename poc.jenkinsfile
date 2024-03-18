@@ -7,10 +7,22 @@ pipeline {
                 script {
                     def imageName = "${JOB_NAME}-${BUILD_ID}"
                     env.imageName = imageName
+                    env.registry = "590184011002.dkr.ecr.ap-south-1.amazonaws.com/ecr-eks-poc:${BUILD_ID}"
                     sh """
                     docker build -t ${imageName} .
+                    docker tag ${imageName} 
                     """
                     //sh 'docker tag $JOB_NAME:v1.$BUILD_ID ${registry}:v1.$BUILD_ID'
+                }
+            }
+        }
+        stage('ECR Push') {
+            steps {
+                script {
+                    docker.withRegistry('https://590184011002.dkr.ecr.ap-south-1.amazonaws.com/ecr-eks-poc', 'aws_root_user') {
+                        // 590184011002.dkr.ecr.ap-south-1.amazonaws.com/ecr-eks-poc
+                        docker push ${registry}
+                    }
                 }
             }
         }
